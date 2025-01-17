@@ -1,5 +1,7 @@
 package dev.wallace.agregadorinvestimentos.controller;
 
+import java.net.URI;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,12 +29,13 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody CreateUserDto createUserDto){
-        userService.createUser(createUserDto);
+    public ResponseEntity<?> createUser(@RequestBody CreateUserDto createUserDto) {
+        var userId = userService.createUser(createUserDto);
 
-
-        return null;
+        return ResponseEntity.created(URI.create("/v1/users/" + userId.toString())).build();
     }
+
+    
 
     @GetMapping("/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable("userId") String userId) {

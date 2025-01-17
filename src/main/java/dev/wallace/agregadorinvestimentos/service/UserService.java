@@ -16,22 +16,21 @@ public class UserService {
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-    
-    public UUID createUser(CreateUserDto createUserDto){
-        //retornando somente o id do usuário para seguranca paranao trafegar o objeto todo 
+
+    public UUID createUser(CreateUserDto createUserDto) {
+     //retornando somente o id do usuário para seguranca paranao trafegar o objeto todo 
 
         // DTO -> ENTITY
         var entity = new User(
-            UUID.randomUUID(),
-            createUserDto.username(),
-            createUserDto.email(),
-            createUserDto.password(),
-            Instant.now(),
-            null);
+                UUID.randomUUID(),
+                createUserDto.username(),
+                createUserDto.email(),
+                createUserDto.password(),
+                Instant.now(),
+                null);
 
+        var userSaved = userRepository.save(entity);
 
-       var userSaved = userRepository.save(entity);
-
-       return userSaved.getUserId();
+        return userSaved.getUserId();
     }
 }
