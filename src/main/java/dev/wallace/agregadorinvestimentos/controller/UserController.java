@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class UserController {
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user){
+    public ResponseEntity<User> createUser(@RequestBody CreateUserDto createUserDto){
         return null;
     }
 
