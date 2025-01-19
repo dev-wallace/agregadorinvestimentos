@@ -1,6 +1,7 @@
 package dev.wallace.agregadorinvestimentos.controller;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,5 +51,9 @@ public class UserController {
         
     }
     
+    @GetMapping
+    public ResponseEntity <List<User>> listUsers() {
+        return ResponseEntity.ok(userService.listUsers());
+    }
 
 }
