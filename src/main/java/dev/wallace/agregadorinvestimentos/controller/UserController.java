@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -63,6 +64,16 @@ public class UserController {
         
         userService.deleteById(userId);
 
+        return ResponseEntity.noContent().build();
+    }
+
+
+    @PutMapping("/{userId}")
+    public ResponseEntity<Void> updateUser(@PathVariable("userId")String userId,
+    @RequestBody UpdateUserDto updateUserDto) {
+
+        userService.updateUserById(userId, updateUserDto);
+        
         return ResponseEntity.noContent().build();
     }
    

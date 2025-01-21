@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import dev.wallace.agregadorinvestimentos.controller.CreateUserDto;
+import dev.wallace.agregadorinvestimentos.controller.UpdateUserDto;
 import dev.wallace.agregadorinvestimentos.entity.User;
 import dev.wallace.agregadorinvestimentos.repository.UserRepository;
 
@@ -56,6 +57,30 @@ public class UserService {
             userRepository.deleteById(id);
         }else{
             throw new IllegalArgumentException("User not found");
+        }
+    }
+
+
+    public void updateUserById(String userId,
+    UpdateUserDto updateUserDto){
+        var id = UUID.fromString(userId);
+        var userEntity = userRepository.findById(id); 
+
+        if(userEntity.isPresent()){
+            var user = userEntity.get();
+
+            if(updateUserDto.username() != null){
+                user.setUsername(updateUserDto.username());
+            }
+
+            if(updateUserDto.password() != null){
+                user.setPassword(updateUserDto.password());
+            }
+            userRepository.save(user);
+
+
+
+
         }
     }
 }
