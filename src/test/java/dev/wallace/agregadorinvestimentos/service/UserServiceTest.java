@@ -100,8 +100,8 @@ public class UserServiceTest {
     class getUserById{
 
         @Test
-        @DisplayName("Should get user by id with success")
-        void shouldGetUserByIdWithSuccess() {
+        @DisplayName("Should get user by id with success when optional is present")
+        void shouldGetUserByIdWithSuccessWhenOptionalIsPresent() {
 
             //Arrange
             var user = new User(
@@ -124,6 +124,29 @@ public class UserServiceTest {
             //Assert
             assertTrue(output.isPresent());
             assertEquals(user.getUserId(), uuiduseArgumentCaptor.getValue());
+
+        }
+
+
+
+        @Test
+        @DisplayName("Should get user by id with success when optional is empty")
+        void shouldGetUserByIdWithSuccessWhenOptionalIsEmpty() {
+
+            //Arrange
+            var userId = UUID.randomUUID();
+
+        doReturn(Optional.empty()).when(userRepository).findById(uuiduseArgumentCaptor.capture());
+
+
+          
+
+            //Act
+            var output= userService.getUserById(userId.toString());
+
+            //Assert
+            assertTrue(output.isEmpty());
+            assertEquals(userId, uuiduseArgumentCaptor.getValue());
 
         }
         
