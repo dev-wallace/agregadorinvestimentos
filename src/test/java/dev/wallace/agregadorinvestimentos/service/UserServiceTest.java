@@ -114,11 +114,7 @@ public class UserServiceTest {
         );
 
         doReturn(Optional.of( user)).when(userRepository).findById(uuiduseArgumentCaptor.capture());
-        var input = new CreateUserDto(
-            "username",
-            "email@email.com",
-            "123"
-    );
+
 
           
 
