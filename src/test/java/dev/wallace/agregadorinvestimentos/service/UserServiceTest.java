@@ -68,25 +68,32 @@ public class UserServiceTest {
 
                     
             }
+            @Test
+            @DisplayName("Should throw exception when error occurs")
+            void shouldThrowExceptionWhenErrorOccurs() {
+    
+                doThrow(new RuntimeException()).when(userRepository).save(any());
+                var input = new CreateUserDto(
+                    "username",
+                    "email@email.com",
+                    "123"
+            );
+    
+            assertThrows(RuntimeException.class, 
+            () -> userService.createUser(input));
+    
+    
+               
+    
+    
+                
+            }
+
         }
-        @Test
-        @DisplayName("Should throw exception when error occurs")
-        void shouldThrowExceptionWhenErrorOccurs() {
+   
 
-            doThrow(new RuntimeException()).when(userRepository).save(any());
-            var input = new CreateUserDto(
-                "username",
-                "email@email.com",
-                "123"
-        );
-
-        assertThrows(RuntimeException.class, 
-        () -> userService.createUser(input));
-
-
-           
-
-
-            
-        }
+    @Nested
+    class getUserById{
+        
+    }
 }
