@@ -5,6 +5,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 
 import java.time.Instant;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.junit.jupiter.api.DisplayName;
@@ -31,6 +32,9 @@ public class UserServiceTest {
 
     @Captor
     private ArgumentCaptor<User> useArgumentCaptor;
+
+    @Captor
+    private ArgumentCaptor<UUID> uuiduseArgumentCaptor;
 
     @Nested
     class createUser {
@@ -94,6 +98,38 @@ public class UserServiceTest {
 
     @Nested
     class getUserById{
+
+        @Test
+        @DisplayName("Should get user by id with success")
+        void shouldGetUserByIdWithSuccess() {
+
+            //Arrange
+            var user = new User(
+                UUID.randomUUID(),
+                "username",
+                "email@email.com",
+                "password",
+                Instant.now(),
+                null
+        );
+
+        doReturn(Optional.of( user)).when(userRepository).findById(uuiduseArgumentCaptor.capture());
+        var input = new CreateUserDto(
+            "username",
+            "email@email.com",
+            "123"
+    );
+
+          
+
+            //Act
+            var output= userService.getUserById(user.getUserId().toString());
+
+            //Assert
+            assertTrue(output.isPresent());
+            assertEquals(user.getUserId(), uuiduseArgumentCaptor.getValue());
+
+        }
         
     }
 }
