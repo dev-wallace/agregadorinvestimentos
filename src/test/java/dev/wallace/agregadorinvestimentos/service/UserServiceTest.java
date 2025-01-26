@@ -192,47 +192,58 @@ public class UserServiceTest {
      }
     }
    
-   @Nested
-    class deleteById{
-
+    @Nested
+    class deleteById {
 
         @Test
-        @DisplayName("Should delete user with success")
-        void shouldDeleteUserWitchSuccess() {
-               
+        @DisplayName("Should delete user with success when user exists")
+        void shouldDeleteUserWithSuccessWhenUserExists() {
 
+            // Arrange
             doReturn(true)
-            .when(userRepository)
-            .existsById(uuiduseArgumentCaptor.capture());
+                    .when(userRepository)
+                    .existsById(uuiduseArgumentCaptor.capture());
 
-
-
-        doNothing()
-        .when(userRepository)
-        .deleteById(uuiduseArgumentCaptor.capture());
-
-
-          
-
-            //Act
+            doNothing()
+                    .when(userRepository)
+                    .deleteById(uuiduseArgumentCaptor.capture());
 
             var userId = UUID.randomUUID();
-             userService.deleteById(userId.toString());
 
-            //Assert
+            // Act
+            userService.deleteById(userId.toString());
+
+            // Assert
             var idList = uuiduseArgumentCaptor.getAllValues();
-
-            assertEquals(userId,idList.get(0));
+            assertEquals(userId, idList.get(0));
             assertEquals(userId, idList.get(1));
-            
-        
-           verify(userRepository, times(1))
-           .existsById(idList.get(0));
 
-           verify(userRepository, times(1))
-           .deleteById(idList.get(1));
+            verify(userRepository, times(1)).existsById(idList.get(0));
+            verify(userRepository, times(1)).deleteById(idList.get(1));
+        }
+
+        @Test
+        @DisplayName("Should not delete user when user NOT exists")
+        void shouldNotDeleteUserWhenUserNotExists() {
+
+            // Arrange
+            doReturn(false)
+                    .when(userRepository)
+                    .existsById(uuiduseArgumentCaptor.capture());
+            var userId = UUID.randomUUID();
+
+            // Act
+            userService.deleteById(userId.toString());
+
+            // Assert
+            assertEquals(userId, uuiduseArgumentCaptor.getValue());
+
+            verify(userRepository, times(1))
+                    .existsById(uuiduseArgumentCaptor.getValue());
+
+            verify(userRepository, times(0)).deleteById(any());
         }
     }
-    
+
 
 }
