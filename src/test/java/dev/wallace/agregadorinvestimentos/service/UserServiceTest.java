@@ -1,8 +1,11 @@
 package dev.wallace.agregadorinvestimentos.service;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import java.time.Instant;
 import java.util.List;
@@ -155,6 +158,7 @@ public class UserServiceTest {
 
     @Nested
     class listUsers{
+
         @Test
         @DisplayName("Should return all users with success")
         void shouldReturnAllUserswithSuccess() {
@@ -187,5 +191,48 @@ public class UserServiceTest {
           
      }
     }
+   
+   @Nested
+    class deleteById{
+
+
+        @Test
+        @DisplayName("Should delete user with success")
+        void shouldDeleteUserWitchSuccess() {
+               
+
+            doReturn(true)
+            .when(userRepository)
+            .existsById(uuiduseArgumentCaptor.capture());
+
+
+
+        doNothing()
+        .when(userRepository)
+        .deleteById(uuiduseArgumentCaptor.capture());
+
+
+          
+
+            //Act
+
+            var userId = UUID.randomUUID();
+             userService.deleteById(userId.toString());
+
+            //Assert
+            var idList = uuiduseArgumentCaptor.getAllValues();
+
+            assertEquals(userId,idList.get(0));
+            assertEquals(userId, idList.get(1));
+            
+        
+           verify(userRepository, times(1))
+           .existsById(idList.get(0));
+
+           verify(userRepository, times(1))
+           .deleteById(idList.get(1));
+        }
+    }
+    
 
 }
