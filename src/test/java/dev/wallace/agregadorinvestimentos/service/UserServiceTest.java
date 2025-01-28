@@ -292,6 +292,14 @@ public class UserServiceTest {
             assertEquals(updateUserDto.username(), userCaptured.getUsername());
             assertEquals(updateUserDto.password(), userCaptured.getPassword());
 
+
+            verify(userRepository, times(1))
+            .findById(uuiduseArgumentCaptor.getValue());
+
+
+            verify(userRepository, times(1))
+            .save(user);
+
         }
 
 
