@@ -23,6 +23,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import dev.wallace.agregadorinvestimentos.controller.CreateUserDto;
+import dev.wallace.agregadorinvestimentos.controller.UpdateUserDto;
 import dev.wallace.agregadorinvestimentos.entity.User;
 import dev.wallace.agregadorinvestimentos.repository.UserRepository;
 
@@ -243,7 +244,56 @@ public class UserServiceTest {
 
             verify(userRepository, times(0)).deleteById(any());
         }
+
     }
 
+    @Nested
+    class updateUserById{
+        @Test
+        @DisplayName("Should update user by id when user exists and username and password is filled")
+        void shouldUptdateUserByIdWhenUserExistsAndUsernameAndPasswordIsFilled() {
 
+            //Arrange--esqueleto
+
+            var updateUserDto = new UpdateUserDto(
+                "newUsername",
+                "newPassword"
+            );
+
+            var user = new User(
+                UUID.randomUUID(),
+                "username",
+                "email@email.com",
+                "password",
+                Instant.now(),
+                null
+        );
+
+        doReturn(Optional.of( user)).when(userRepository)
+        .findById(uuiduseArgumentCaptor.capture());
+
+        doReturn(( user))
+        .when(userRepository)
+        .save(useArgumentCaptor.capture());
+
+
+          
+
+            //Act--acao
+            userService.updateUserById(user.getUserId().toString()
+            , updateUserDto);
+
+            //Assert--confirmacoes
+
+            assertEquals(user.getUserId(), uuiduseArgumentCaptor.getValue());
+             var userCaptured = useArgumentCaptor.getValue(); 
+
+
+            assertEquals(updateUserDto.username(), userCaptured.getUsername());
+            assertEquals(updateUserDto.password(), userCaptured.getPassword());
+
+        }
+
+
+    }
 }
